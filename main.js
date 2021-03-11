@@ -9,7 +9,7 @@ const ejs = require("ejs")
 const path = require("path")
 const fs = require("fs")
 
-//Bearbeta album.csv
+//Bearbeta album.csv till ett objekt
 
 const customSplit = (string) => {
   const array = []
@@ -64,7 +64,9 @@ for (const album of albums) {
   objectArray.push(albumObject)
 }
 
-console.log(objectArray);
+//console.log(objectArray);
+
+//objektArray innehåller album info
 
 
 
@@ -77,14 +79,30 @@ const indexPath = path.join(distFolder, indexFile)
 
 
 const data = {
-  message: "Hello World"
+  message: "Hello World",
+  pages: {
+   
+  }
 }
 
-// ejs.renderFile(templatePath, data, function(err, str) {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log(str);
-//     fs.writeFileSync(indexPath, str)
-//   }
-// })
+let pageCount = 1
+for (let i = 0; i < objectArray.length; i+=20) {
+  data.pages[pageCount] = objectArray.slice(i, i + 20)
+  pageCount++
+}
+
+console.log(data.pages["18"]);
+
+
+for (let page of Object.keys(data.pages)) {
+  ejs.renderFile(templatePath, {pageNumber: data.pages[page]}, function(err, str) {
+    if (err) {
+      //console.log(err);
+    } else {
+      //console.log(str);
+      fs.writeFileSync(path.join(distFolder, `page${page}.html`), str)
+    }
+  })
+}
+
+

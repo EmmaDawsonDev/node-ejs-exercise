@@ -1,1 +1,8 @@
-<h3>This is a <%= message %></h3>
+<% for (let album of pageNumber) { %>
+  <h5><%= album.Title %></h5>
+  <p><%= album.Name %></p>
+  <p><%= album.NumTracks %></p>
+
+<% } %>
+
+
